@@ -9,7 +9,7 @@ PORT = 8000
 HOST = '0.0.0.0'
 
 app = Flask(__name__)
-app.SECRET_KEY = 'asxiu!0824b24$52nslf%(s/sgalsfhflghasaslh20*@08Sfg2@'
+app.secret_key = 'asxiu!0824b24$52nslf%(s/sgalsfhflghasaslh20*@08Sfg2@'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -42,7 +42,6 @@ def after_request(response):
 def register():
     form = forms.RegisterForm()
     if form.validate_on_submit():
-        flash('Awesome, thanks for registering!', 'success')
         models.User.create_user(
             username=form.username.data,
             email=form.email.data,
@@ -57,8 +56,11 @@ def index():
 
 if __name__ == '__main__':
     models.initialize()
-    models.User.create_user(name='bashhack',
-                            email='info@marclaughton.com',
-                            password='password',
-                            admin=True)
+    try:
+        models.User.create_user(username='bashhack',
+                                email='info@marclaughton.com',
+                                password='password',
+                                admin=True)
+    except ValueError:
+        pass
     app.run(debug=DEBUG, host=HOST, port=PORT)

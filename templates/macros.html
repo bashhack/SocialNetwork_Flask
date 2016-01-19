@@ -1,0 +1,40 @@
+{% macro render_field(field) %}
+  <div class='field'>
+    {% if field.errors %}
+      {% for error in field.errors %}
+      <div class='notification error'>{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+    {{ field(placeholder=field.label.text) }}
+  </div>
+{% endmacro %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+Challenge!
+
+Requirements:
+Create a macro named hide_email. It should take a User as an argument.
+Print out the email attribute of the User in the following format:
+t***@example.com for the email test@example.com.
+This will require splitting the email string and using a for loop.
+
+My solution:
+
+{% macro hide_email(user) %}
+  {% with name, domain = user.email.split('@') %}
+    {{ name[0] }}{% for letter in name[1:] %}*{% endfor %}@{{ domain }}
+  {% endwith %}
+{% endmacro %} -->
