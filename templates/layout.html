@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>{% block title %}TwoCans{% endblock %}</title>
+        <title>{% block title %}Social Network{% endblock %}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
@@ -55,6 +55,11 @@
           <div class="main">
             <nav>
               <a href="{{ url_for('index') }}">All</a>
+              {% if current_user.is_authenticated %}
+              <a href="{{ url_for('stream', username=current_user.username)
+                }}">Following</a>
+              <a href="{{ url_for('post') }}" class='new'>Create New Post</a>
+              {% endif %}
             </nav>
 
             {% block content %}{% endblock %}
@@ -63,7 +68,8 @@
         </div>
         <footer>
           <div class="row">
-            <p>A Social App built with Flask<br>by <a href="http://teamtreehouse.com">Treehouse</a></p>
+            <p>A Social App built with Flask<br>by <a
+                href="http://marclaughton.com">Marc Laughton - bashhack</a></p>
           </div>
         </footer>
 
