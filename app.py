@@ -106,6 +106,56 @@ def stream(username=None):
     return render_template(template, stream=stream, user=user)
 
 
+@app.route('/post/<int:post_id>')
+def view_post(post_id):
+    posts = models.Post.select().where(models.Post.id == post_id)
+    return render_template('stream.html', stream=posts)
+
+
+@app.route('/follow/<username>')
+@login_required
+def follow(username):
+    try:
+        to_user = models.User.get(models.User.username**username)
+    except models.DoesNotExist:
+        pass
+    else:
+        try:
+            models.Relationship.create(
+                from_user=g.user._get_current_object(),
+                to_user=to_user
+            )
+        except models.IntegrityError:
+            pass
+        else:
+            flash('You\'re now following {}!'.format(
+                to_user.username), 'success'
+            )
+    return redirect(url_for('stream', username=to_user.username))
+
+
+@app.route('/unfollow/<username>')
+@login_required
+def unfollow(username):
+    try:
+        to_user = models.User.get(models.User.username**username)
+    except models.DoesNotExist:
+        pass
+    else:
+        try:
+            models.Relationship.get(
+                from_user=g.user._get_current_object(),
+                to_user=to_user
+            ).delete_instance()
+        except models.IntegrityError:
+            pass
+        else:
+            flash('You\'ve unfollowed {}!'.format(
+                to_user.username), 'success'
+            )
+    return redirect(url_for('stream', username=to_user.username))
+
+
 @app.route('/')
 def index():
     stream = models.Post.select().limit(100)
