@@ -177,8 +177,8 @@ def not_found(error):
 if __name__ == '__main__':
     models.initialize()
     try:
-        models.User.create_user(username='bashhack',
-                                email='info@marclaughton.com',
+        models.User.create_user(username='testuser',
+                                email='example@example.com',
                                 password='password',
                                 admin=True)
     except ValueError:
